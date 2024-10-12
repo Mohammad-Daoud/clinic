@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .login-container {
+            display: flex;
+            align-items: center;
+            height: 100vh; /* Full viewport height for better centering */
+        }
+        .login-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .login-form {
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container login-container">
+    <div class="row w-100">
+        <!-- Image Column -->
+        <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center">
+            <img src="https://lh3.googleusercontent.com/d/10CsaxwL_KWGqhz_74SAwMbYcnDdo7H25=w1000" alt="Doctor's Clinic" class="login-image">
+
+        </div>
+
+        <!-- Form Column -->
+        <div class="col-md-6">
+            <div class="login-form">
+                <h2 class="text-center">Login</h2>
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group mb-3">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" class="form-control" required autofocus>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </div>
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        Invalid username or password.
+                    </div>
+                    <div th:if="${param.logout}" class="alert alert-success">
+                        You have been logged out.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

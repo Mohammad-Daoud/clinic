@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit patient</title>
+  <th:block th:include="header :: header"></th:block>
+  <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
+  <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .btn-primary {
+      margin-top: 1rem;
+    }
+    .alert-danger {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <h1 class="mb-3">
+    <span th:text="'Edit '+${client.firstName}"></span>
+    <span th:text="' ' + ${client.lastName}+' Information'"></span>
+  </h1>
+
+  <!-- Error message -->
+  <div id="error-message" class="alert alert-danger"></div>
+
+  <form id="edit-client-form" th:action="@{/clients/edit}" th:object="${client}" method="post" enctype="multipart/form-data" class="needs-validation">
+    <input type="hidden" th:field="*{id}"/>
+
+    <!-- Original Names (for comparison) -->
+    <input type="hidden" id="originalFirstName" th:value="${client.firstName}">
+    <input type="hidden" id="originalLastName" th:value="${client.lastName}">
+
+    <!-- First Name -->
+    <div class="form-group row">
+      <label for="firstName" class="col-sm-2 col-form-label">First Name:</label>
+      <div class="col-sm-10">
+        <input type="text" id="firstName" th:field="*{firstName}" class="form-control" required/>
+      </div>
+    </div>
+
+<!--
+    &lt;!&ndash; Second Name &ndash;&gt;
+    <div class="form-group row">
+      <label for="secondName" class="col-sm-2 col-form-label">Second Name:</label>
+      <div class="col-sm-10">
+        <input type="text" id="secondName" th:field="*{secondName}" class="form-control"/>
+      </div>
+    </div>
+
+    &lt;!&ndash; Third Name &ndash;&gt;
+    <div class="form-group row">
+      <label for="thirdName" class="col-sm-2 col-form-label">Third Name:</label>
+      <div class="col-sm-10">
+        <input type="text" id="thirdName" th:field="*{thirdName}" class="form-control"/>
+      </div>
+    </div>
+-->
+
+    <!-- Last Name -->
+    <div class="form-group row">
+      <label for="lastName" class="col-sm-2 col-form-label">Last Name:</label>
+      <div class="col-sm-10">
+        <input type="text" id="lastName" th:field="*{lastName}" class="form-control" required/>
+      </div>
+    </div>
+
+<!--
+    &lt;!&ndash; Address &ndash;&gt;
+    <div class="form-group row">
+      <label for="address" class="col-sm-2 col-form-label">Address:</label>
+      <div class="col-sm-10">
+        <input type="text" id="address" th:field="*{address}" class="form-control"/>
+      </div>
+    </div>
+-->
+
+    <!-- Phone Number -->
+    <div class="form-group row">
+      <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number:</label>
+      <div class="col-sm-10">
+        <input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control"/>
+      </div>
+    </div>
+
+<!--    &lt;!&ndash; P.O. Box &ndash;&gt;
+    <div class="form-group row">
+      <label for="poBox" class="col-sm-2 col-form-label">P.O. Box:</label>
+      <div class="col-sm-10">
+        <input type="text" id="poBox" th:field="*{poBox}" class="form-control"/>
+      </div>
+    </div>-->
+
+    <!-- Age -->
+    <div class="form-group row">
+      <label for="age" class="col-sm-2 col-form-label">Age:</label>
+      <div class="col-sm-10">
+        <input type="number" id="age" th:field="*{age}" class="form-control"/>
+      </div>
+    </div>
+
+<!--    &lt;!&ndash; Occupation &ndash;&gt;
+    <div class="form-group row">
+      <label for="occupation" class="col-sm-2 col-form-label">Occupation:</label>
+      <div class="col-sm-10">
+        <input type="text" id="occupation" th:field="*{occupation}" class="form-control"/>
+      </div>
+    </div>-->
+
+    <!-- Attachments (Edit Images) -->
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Attachments:</label>
+      <div class="col-sm-10">
+        <a href="/clients/images/edit?id=" th:href="@{/clients/images/edit(id=${client.id})}" class="form-control-file btn btn-outline-primary">Edit Images</a>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
+    <a href="/clients/view?id=" th:href="@{/clients/view(id=${client.id})}" class="btn btn-outline-primary mt-3">Back to Patient Details</a>
+  </form>
+
+  <!-- Back to Client Details -->
+</div>
+
+<script>
+  document.getElementById("edit-client-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    validateClientName();
+  });
+
+  function validateClientName() {
+    const firstName = document.getElementById("firstName").value;
+/*    const secondName = document.getElementById("secondName").value;
+    const thirdName = document.getElementById("thirdName").value;*/
+    const lastName = document.getElementById("lastName").value;
+
+    // Check if any of the names contain spaces
+    const errorMessage = checkSpacesInNames(firstName, lastName);
+    if (errorMessage !== null) {
+      showErrorMessage(`Input value "${errorMessage}" should not contain spaces.`);
+      return;
+    }
+
+    const originalFirstName = document.getElementById("originalFirstName").value;
+/*    const originalSecondName = document.getElementById("originalSecondName").value;
+    const originalThirdName = document.getElementById("originalThirdName").value;*/
+    const originalLastName = document.getElementById("originalLastName").value;
+
+    // Check if the name has changed
+    if (
+            firstName === originalFirstName &&
+/*            secondName === originalSecondName &&
+            thirdName === originalThirdName &&*/
+            lastName === originalLastName
+    ) {
+      submitForm();
+    } else {
+      // Name has changed, validate for uniqueness
+      fetch(`/api/clients/check-client-name?firstName=${firstName}&secondName=&thirdName=&lastName=${lastName}`)
+              .then(response => response.json())
+              .then(data => {
+                if (data) {
+                  showErrorMessage("A client with the same name already exists.");
+                } else {
+                  submitForm();
+                }
+              })
+              .catch(error => {
+                console.error("Error checking client name:", error);
+              });
+    }
+  }
+
+  function checkSpacesInNames(firstName, lastName) {
+    if (firstName.includes(' ')) {
+      return firstName;
+    }/*
+    if (secondName.includes(' ')) {
+      return secondName;
+    }
+    if (thirdName.includes(' ')) {
+      return thirdName;
+    }*/
+    if (lastName.includes(' ')) {
+      return lastName;
+    }
+    return null;
+  }
+
+  function showErrorMessage(message) {
+    const errorMessageDiv = document.getElementById("error-message");
+    errorMessageDiv.style.display = "block";
+    errorMessageDiv.innerText = message;
+  }
+
+  function submitForm() {
+    const form = document.getElementById("saveChangesBtn");
+    form.click();
+  }
+</script>
+</body>
+</html>

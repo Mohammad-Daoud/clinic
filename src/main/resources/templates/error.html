@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Error</title>
+  <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Full viewport height */
+      text-align: center;
+    }
+    .error-content {
+      max-width: 500px;
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .error-icon {
+      font-size: 3rem;
+      color: #dc3545; /* Bootstrap's danger color */
+      margin-bottom: 15px;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #dc3545;
+    }
+    p {
+      margin: 15px 0;
+      color: #6c757d; /* Bootstrap's muted text color */
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      font-size: 1rem;
+      padding: 10px 20px;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="error-content">
+    <!-- SVG Icon for Error -->
+    <div class="error-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-emoji-frown" viewBox="0 0 16 16">
+        <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+        <path d="M4.285 9.567a.5.5 0 0 0 .66.75A3.986 3.986 0 0 1 8 11a3.986 3.986 0 0 1 3.055-1.683.5.5 0 1 0 .66-.75A4.986 4.986 0 0 0 8 10a4.986 4.986 0 0 0-3.715-1.433zM7 6.5c.5 0 1-.448 1-1s-.5-1-1-1-1 .448-1 1 .5 1 1 1zm4 0c.5 0 1-.448 1-1s-.5-1-1-1-1 .448-1 1 .5 1 1 1z"/>
+      </svg>
+    </div>
+    <h1>Something went wrong!</h1>
+    <p th:text="${message}">An unexpected error occurred. Please try again later.</p>
+    <a th:href="@{/}" class="btn btn-primary">Go to Home</a>
+  </div>
+</div>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

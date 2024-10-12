@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Client Not Found</title>
+    <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            text-align: center;
+        }
+        .not-found-content {
+            max-width: 500px;
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .not-found-icon {
+            font-size: 3rem;
+            color: #ffc107; /* Bootstrap's warning color */
+            margin-bottom: 15px;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #ffc107; /* Match the warning color */
+        }
+        p {
+            margin: 15px 0;
+            color: #6c757d; /* Bootstrap's muted text color */
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="not-found-content">
+        <!-- SVG Icon for Not Found -->
+        <div class="not-found-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-person-x-fill" viewBox="0 0 16 16">
+                <path d="M11 7a4 4 0 1 0-8 0 4 4 0 0 0 8 0z"/>
+                <path fill-rule="evenodd" d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM4.146 8.854a.5.5 0 0 1 .708 0L7 11.293l2.146-2.147a.5.5 0 0 1 .708.708L7.707 12l2.147 2.146a.5.5 0 0 1-.708.708L7 12.707l-2.146 2.147a.5.5 0 0 1-.708-.708L6.293 12 4.146 9.854a.5.5 0 0 1 0-.708z"/>
+            </svg>
+        </div>
+        <h1>Client Not Found</h1>
+        <p>The client you are looking for does not exist in our records.</p>
+        <a th:href="@{/}" class="btn btn-primary">Go to Home</a>
+    </div>
+</div>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Users - Change Passwords</title>
+    <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+    <th:block th:include="header :: header"></th:block>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 40px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="mb-4 text-center">Manage Users - Change Passwords</h1>
+
+    <div th:if="${users != null}">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.roles}"></td>
+                <td>
+                    <button class="btn btn-warning btn-sm change-password-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#changePasswordModal"
+                            th:attr="data-username=${user.username}">
+                        Change Password
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for Changing Password -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/change-password}" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" id="username" name="username">
+
+                        <div class="form-group mb-3">
+                            <label for="newPassword" class="form-label">New Password:</label>
+                            <input type="password" id="newPassword" name="newPassword" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password:</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer ">
+                        <div class="d-flex justify-content-between w-100">
+                            <button type="submit" class="btn btn-primary m-1">Update Password</button>
+                            <button type="button" class="btn btn-secondary m-1" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Modal -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" th:classappend="${success != null} ? 'bg-success text-white' : 'bg-danger text-white'">
+                    <h5 class="modal-title" id="messageModalLabel" th:text="${success != null} ? 'Success' : 'Error'"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p th:text="${success}"></p>
+                    <p th:text="${error}"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show the message modal if there's a success or error message
+    document.addEventListener('DOMContentLoaded', function () {
+        if ([[${success != null}]]) {
+            const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+            messageModal.show();
+        } else if ([[${error != null}]]) {
+            const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+            messageModal.show();
+        }
+
+        // Set the username in the password change modal
+        const changePasswordModal = document.getElementById('changePasswordModal');
+        changePasswordModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const username = button.getAttribute('data-username');
+            document.getElementById('username').value = username;
+        });
+    });
+</script>
+
+</body>
+</html>
