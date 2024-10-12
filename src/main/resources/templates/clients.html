@@ -2,98 +2,133 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-  <title>Patients</title>
-  <!-- Include Bootstrap CSS -->
-  <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
+    <title>Patients</title>
+    <!-- Include Bootstrap CSS -->
+    <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
 
-  <!-- Bootstrap and jQuery JS -->
-  <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
-  <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
+    <!-- Bootstrap and jQuery JS -->
+    <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
 
-  <!-- Include Header -->
-  <th:block th:include="header :: header"></th:block>
+    <!-- Include Header -->
+    <th:block th:include="header :: header"></th:block>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <div class="container mt-4">
-  <h1 class="mb-3 text-center">Patients List</h1>
+    <h1 class="mb-3 text-center">Patients List </h1>
+    <div class="alert alert-success text-center"
+         th:if="${today}">For <span class="fw-bold" th:text="${#temporals.format(todayDate, 'EEEE, dd/MMMM/yyyy')}+' '"></span>
+    </div>
 
-  <!-- Add New Client Button -->
-  <div class="d-flex justify-content-end mb-3">
-    <a href="/clients/add" class="btn btn-primary">Add New Patient</a>
-  </div>
-
-  <!-- Responsive Table Wrapper -->
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped text-center">
-      <thead class="thead-dark">
-      <tr>
-        <th>ID</th>
-<!--        <th>First Name</th>
-        <th>Second Name</th>
-        <th>Third Name</th>
-        <th>Last Name</th>-->
-        <th>Name</th>
-        <th>Phone Number</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="client : ${clientsPage.content}">
-        <td th:text="${client.id}"></td>
-<!--        <td th:text="${client.firstName}"></td>
-        <td th:text="${client.secondName}"></td>
-        <td th:text="${client.thirdName}"></td>
-        <td th:text="${client.lastName}"></td>
-        <td th:text="${client.phoneNumber}"></td>-->
-        <td>
-          <span th:text="${client.firstName}"></span>
-          <span th:text="' ' + ${client.lastName}"></span>
-        </td>
-        <td th:text="${client.phoneNumber}"></td>
-        <td>
-          <a th:href="@{/clients/view(id=${client.id})}" class="btn btn-sm btn-info m-1">View</a>
-          <a th:href="@{/clients/edit(id=${client.id})}" class="btn btn-sm btn-warning m-1">Edit</a>
-          <a href="#" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteClientModal"
-             sec:authorize="hasRole('ADMIN')">Delete</a>
-
-          <!-- Delete Patient Confirmation Modal -->
-          <div class="modal fade" id="deleteClientModal" tabindex="-1" aria-labelledby="deleteClientModalLabel" aria-hidden="true" sec:authorize="hasRole('ADMIN')">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                  <h5 class="modal-title" id="deleteClientModalLabel">Delete Patient Confirmation</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure you want to delete this patient? This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <a th:href="@{/clients/delete(id=${client.id})}" id="confirmDeleteClient" class="btn btn-danger">Delete</a>
-                </div>
-              </div>
+  <div th:if="${clientExistsForDefaultPage}">
+    <!-- Modal Structure -->
+    <div class="modal fade" id="rescheduledAppointmentsModal" tabindex="-1" aria-labelledby="rescheduledAppointmentsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rescheduledAppointmentsModalLabel">Rescheduled Appointments</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning" role="alert">
+              <strong>Notice:</strong> You have rescheduled appointments today!
             </div>
           </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script to automatically show the modal when condition is true -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var rescheduledAppointmentsModal = new bootstrap.Modal(document.getElementById('rescheduledAppointmentsModal'));
+        rescheduledAppointmentsModal.show();
+      });
+    </script>
   </div>
 
-  <!-- Pagination Controls -->
-  <div class="d-flex justify-content-between align-items-center mt-3">
+
+  <!-- Add New Client Button -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="/clients/add" class="btn btn-primary">Add New Patient</a>
+    </div>
+
+    <!-- Responsive Table Wrapper -->
+    <div class="table-responsive" th:if="${!clientsPage.isEmpty()}">
+        <table class="table table-bordered table-striped text-center">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="client : ${clientsPage.content}">
+                <td th:text="${client.id}"></td>
+                <td>
+                    <span th:text="${client.firstName}"></span>
+                    <span th:text="' ' + ${client.lastName}"></span>
+                </td>
+                <td th:text="${client.phoneNumber}"></td>
+                <td>
+                    <a th:href="@{/clients/view(id=${client.id})}" class="btn btn-sm btn-info m-1">View</a>
+                    <a th:href="@{/clients/edit(id=${client.id})}" class="btn btn-sm btn-warning m-1">Edit</a>
+                    <a href="#" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal"
+                       data-bs-target="#deleteClientModal"
+                       sec:authorize="hasRole('ADMIN')">Delete</a>
+
+                    <!-- Delete Patient Confirmation Modal -->
+                    <div class="modal fade" id="deleteClientModal" tabindex="-1"
+                         aria-labelledby="deleteClientModalLabel" aria-hidden="true" sec:authorize="hasRole('ADMIN')">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title" id="deleteClientModalLabel">Delete Patient Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete this patient? This action cannot be undone.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
+                                    </button>
+                                    <a th:href="@{/clients/delete(id=${client.id})}" id="confirmDeleteClient"
+                                       class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${clientsPage.isEmpty()}">
+        <h2 class="text-center"> There is No Examinations For Today </h2>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="d-flex justify-content-between align-items-center mt-3" th:if="${!clientsPage.isEmpty()}">
     <span th:if="${clientsPage.hasPrevious()}">
       <a th:href="@{/clients(page=${clientsPage.number - 1}, size=${clientsPage.size})}" class="btn btn-secondary">Previous</a>
     </span>
-    <span>
+        <span>
       Page <span th:text="${clientsPage.number + 1}">1</span> of <span th:text="${clientsPage.totalPages}">1</span>
     </span>
-    <span th:if="${clientsPage.hasNext()}">
-      <a th:href="@{/clients(page=${clientsPage.number + 1}, size=${clientsPage.size})}" class="btn btn-secondary">Next</a>
+        <span th:if="${clientsPage.hasNext()}">
+      <a th:href="@{/clients(page=${clientsPage.number + 1}, size=${clientsPage.size})}"
+         class="btn btn-secondary">Next</a>
     </span>
-  </div>
+    </div>
 </div>
 <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
 

@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,8 +31,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/webjars/**", "/css/**", "/js/**", "/images/**").permitAll() // Allow static resources
-                        .requestMatchers("/login").permitAll() // Allow public access to the login page
+                        .requestMatchers("/webjars/**", "/css/**", "/js/**", "/images/**","/image/**").permitAll() // Allow static resources
+                        .requestMatchers("/login").permitAll() // Allow public access to the login page;
+                        .requestMatchers("/h2-console/**", "/clinicdb/**").hasRole("ADMIN")
                         .requestMatchers("/**").hasAnyRole("ADMIN", "USER") // Secure other endpoints
                         .anyRequest().authenticated()
                 )
@@ -49,6 +51,9 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/access-denied")
+                )
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin) // Updated way to allow frames from same origin
                 );
         return http.build();
     }

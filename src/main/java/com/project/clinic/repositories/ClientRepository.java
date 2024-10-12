@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -27,21 +28,6 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
             "AND LOWER(c.lastName) LIKE LOWER(CONCAT('%', :lastName, '%'))")
     Page<Client> searchByFirstAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName, Pageable pageable);
 
-/*
-    @Query("SELECT c FROM Client c WHERE LOWER(c.firstName) LIKE LOWER(CONCAT('%', :firstName, '%')) " +
-            "AND LOWER(c.secondName) LIKE LOWER(CONCAT('%', :secondName, '%')) " +
-            "AND LOWER(c.lastName) LIKE LOWER(CONCAT('%', :lastName, '%'))")
-    Page<Client> searchByFirstSecondAndLastName(@Param("firstName") String firstName, @Param("secondName") String secondName, @Param("lastName") String lastName, Pageable pageable);
-*/
-
-/*
-    @Query("SELECT c FROM Client c WHERE LOWER(c.firstName) LIKE LOWER(CONCAT('%', :firstName, '%')) " +
-            "AND LOWER(c.secondName) LIKE LOWER(CONCAT('%', :secondName, '%')) " +
-            "AND LOWER(c.thirdName) LIKE LOWER(CONCAT('%', :thirdName, '%')) " +
-            "AND LOWER(c.lastName) LIKE LOWER(CONCAT('%', :lastName, '%'))")
-    Page<Client> searchByFullName(@Param("firstName") String firstName, @Param("secondName") String secondName, @Param("thirdName") String thirdName, @Param("lastName") String lastName, Pageable pageable);
-*/
-
     @Query("SELECT c FROM Client c WHERE " +
             "LOWER(c.firstName) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
             "LOWER(c.lastName) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
@@ -54,4 +40,10 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
             "(:lastName IS NULL OR LOWER(c.lastName) = LOWER(:lastName))")
     List<Client> findSimilarClients(@Param("firstName") String firstName,
                                     @Param("lastName") String lastName);
+
+
+    @Query("SELECT DISTINCT c FROM Client c LEFT JOIN c.exams e " +
+            "WHERE (e.dateOfReExamination = :date) OR (e IS NULL AND c.dateOfCreation = :date)")
+    Page<Client> findLatestClientByExamOrCreationDate(@Param("date") LocalDate date, Pageable pageable);
+
 }

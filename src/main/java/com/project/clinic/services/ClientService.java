@@ -48,23 +48,21 @@ public class ClientService {
     }
 
     public void updateClient(Client client) {
-        // Find the existing client and update its details
         Client existingClient = clientRepository.findById(client.getId())
                 .orElseThrow(() -> new ClientNotFoundException(client.getId()));
 
         existingClient.setFirstName(client.getFirstName());
-//        existingClient.setSecondName(client.getSecondName());
-//        existingClient.setThirdName(client.getThirdName());
         existingClient.setLastName(client.getLastName());
-//        existingClient.setAddress(client.getAddress());
         existingClient.setPhoneNumber(client.getPhoneNumber());
-//        existingClient.setPoBox(client.getPoBox());
         existingClient.setAge(client.getAge());
-//        existingClient.setOccupation(client.getOccupation());
         existingClient.setImageUrls(client.getImageUrls());
         clientRepository.save(existingClient);
     }
 
+    public Page<Client> getClientsWithReExaminationToday(Pageable pageable) {
+        LocalDate today = LocalDate.now();
+        return clientRepository.findLatestClientByExamOrCreationDate(today, pageable);
+    }
 
     public String nameContainsSpaces(String ... names) {
         for (String name : names) {

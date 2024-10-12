@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -34,8 +35,11 @@ public class ClientController {
     public String viewAllClients(Model model,
                                  @RequestParam(value = "page", defaultValue = "0") int page,
                                  @RequestParam(value = "size", defaultValue = "10") int size) {
-        Page<Client> clientsPage = clientService.getAllClients(PageRequest.of(page, size));
+        Page<Client> clientsPage = clientService.getClientsWithReExaminationToday(PageRequest.of(page, size));
         model.addAttribute("clientsPage", clientsPage);
+        model.addAttribute("today",true);
+        model.addAttribute("todayDate", LocalDate.now());
+        model.addAttribute("clientExistsForDefaultPage",!clientsPage.isEmpty());
         return "clients";
     }
 

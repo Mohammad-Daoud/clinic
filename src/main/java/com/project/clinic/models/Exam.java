@@ -25,26 +25,6 @@ public class Exam {
     private LocalDate dateLastExam;
     private BigDecimal price;
 
-    // Measurements for both eyes (OD/OS)
-/*
-    private String odSph;
-    private String odCyl;
-    private String odAxis;
-    private String odAdd;
-    private String odLens;
-    private String odVa;
-
-    private String osSph;
-    private String osCyl;
-    private String osAxis;
-    private String osAdd;
-    private String osLens;
-    private String osVa;
-
-    private String kReading;
-    private String contactLens;
-    private String ipd;
-*/
 
     public void updateExamDetails(Exam updatedExam) {
         this.symptoms = updatedExam.getSymptoms();
