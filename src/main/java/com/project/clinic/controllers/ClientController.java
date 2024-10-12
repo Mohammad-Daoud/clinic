@@ -52,11 +52,13 @@ public class ClientController {
         // Check if a client with the same name combination already exists
      /*   if (clientService.clientExists(client.getFirstName(), null,null, client.getLastName())) {
             result.rejectValue("firstName", "error.client", "A client with a similar name already exists.");
-        }
-        String namesError = clientService.nameContainsSpaces(client.getFirstName(), null, null, client.getLastName());
+        }*/
+        String firstName = client.getFirstName().trim();
+        String lastName = client.getLastName().trim();
+        String namesError = clientService.nameContainsSpaces(firstName, null, null, lastName);
         if (namesError != null) {
             result.rejectValue("firstName", "error.client", "Input value \""+namesError+"\" should not contain spaces.");
-        }*/
+        }
 
         if (result.hasErrors()) {
             return "add-client";  // Return to the form if validation fails
@@ -89,6 +91,12 @@ public class ClientController {
     @PostMapping("/edit")
     public String editClient(@ModelAttribute("client") @Valid Client client,
                              BindingResult result) throws IOException {
+        String firstName = client.getFirstName().trim();
+        String lastName = client.getLastName().trim();
+        String namesError = clientService.nameContainsSpaces(firstName, null, null, lastName);
+        if (namesError != null) {
+            result.rejectValue("firstName", "error.client", "Input value \""+namesError+"\" should not contain spaces.");
+        }
         if (result.hasErrors()) {
             return "edit-client";
         }

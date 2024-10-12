@@ -3,6 +3,7 @@ package com.project.clinic.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -22,6 +23,7 @@ public class Exam {
     private String treatment;
     private LocalDate dateOfReExamination;
     private LocalDate dateLastExam;
+    private BigDecimal price;
 
     // Measurements for both eyes (OD/OS)
 /*

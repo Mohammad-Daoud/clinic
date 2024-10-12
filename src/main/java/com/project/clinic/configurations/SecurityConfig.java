@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -32,7 +30,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/webjars/**", "/css/**", "/js/**", "/images/**").permitAll() // Allow static resources
+                        .requestMatchers("/login").permitAll() // Allow public access to the login page
+                        .requestMatchers("/**").hasAnyRole("ADMIN", "USER") // Secure other endpoints
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

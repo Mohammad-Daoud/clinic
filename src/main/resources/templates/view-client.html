@@ -159,6 +159,10 @@
                             <strong>Date Of Re-Examination:</strong>
                             <p th:text="${#temporals.format(exam.dateOfReExamination, 'dd MMM, yyyy')}"></p>
                         </div>
+                        <div class="mb-3">
+                            <strong>Price:</strong>
+                            <p th:text="${exam.price}+' JOD'"></p>
+                        </div>
                         <div class="m-4 text-center" sec:authorize="hasRole('ADMIN')">
                             <a th:href="@{/exams/edit(id=${exam.id})}" class="btn btn-warning">Edit</a>
                             <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteExamModal">Delete</a>
