@@ -64,12 +64,11 @@ public class SwaggerUtils {
         // Button to shut down the system
         JButton shutdownButton = new JButton("Shutdown System");
         shutdownButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        shutdownButton.setPreferredSize(new Dimension(220, 45)); // Set larger size for the button
+        shutdownButton.setPreferredSize(new Dimension(100, 45)); // Set larger size for the button
         shutdownButton.setFont(new Font("Arial", Font.BOLD, 16)); // Increase font size for the button
         shutdownButton.setBackground(new Color(220, 53, 69)); // Bootstrap-like danger color for shutdown
         shutdownButton.setForeground(Color.WHITE);
-
-        // Add action listener to the button to shut down the system
+// Add action listener to the button to shut down the system
         shutdownButton.addActionListener(e -> {
             try {
                 sendExitRequest(url + "/exit"); // Call the /exit endpoint
@@ -78,16 +77,31 @@ public class SwaggerUtils {
             }
         });
 
+        JButton openSystemButton = new JButton("Open in Browser");
+        openSystemButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        openSystemButton.setPreferredSize(new Dimension(220, 45));
+        openSystemButton.setFont(new Font("Arial", Font.BOLD, 16));
+        openSystemButton.setBackground(new Color(34,139,34));
+        openSystemButton.setForeground(Color.WHITE);
+
+        openSystemButton.addActionListener(e -> {
+                NetworkUtil.openBrowser(NetworkUtil.getUrl(context));
+        });
+
         // Add components to the main panel
         panel.add(warningLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 20))); // Add spacing between elements
         panel.add(urlPanel); // Add the URL panel with the copy button
         panel.add(Box.createRigidArea(new Dimension(0, 20))); // Add more spacing
+        panel.add(openSystemButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Add more spacing
         panel.add(shutdownButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Add more spacing
+
+
 
         // Add panel to frame
         frame.add(panel, BorderLayout.CENTER);
-
         // Center the window on the screen
         frame.setLocationRelativeTo(null);
 

@@ -81,7 +81,8 @@
     <div th:if="${client.imageUrls != null && !client.imageUrls.isEmpty()}">
         <p><strong>Attachments:</strong></p>
         <div class="d-flex flex-wrap">
-            <button type="button" class="btn btn-outline-primary m-2" data-bs-toggle="modal" data-bs-target="#imageModal">
+            <button type="button" class="btn btn-outline-primary m-2" data-bs-toggle="modal"
+                    data-bs-target="#imageModal">
                 View Attachments
             </button>
         </div>
@@ -107,11 +108,13 @@
                             </div>
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
@@ -123,7 +126,8 @@
 
 <div class="container mt-4">
     <h2>Examinations</h2>
-    <a th:href="@{/exams/add(id=${client.id})}" class="btn btn-primary mb-3" sec:authorize="hasRole('ADMIN')">Add New Examination</a>
+    <a th:href="@{/exams/add(id=${client.id})}" class="btn btn-primary mb-3" sec:authorize="hasRole('ADMIN')">Add New
+        Examination</a>
 
     <!-- Display examinations -->
     <div th:if="${client.exams != null && !client.exams.isEmpty()}">
@@ -155,7 +159,7 @@
                             <strong>Treatment:</strong>
                             <p id="treatment-content" th:text="${exam.treatment}"></p>
                             <!-- Add a Print button -->
-                            <button class="btn btn-primary" onclick="printTreatmentContent()">Print Treatment</button>
+                            <button class="btn btn-primary"  th:onclick="'javascript:printTreatmentContent(' + ${exam.id} + ')'" >Print Treatment (Prescription)</button>
                         </div>
 
                         <div class="mb-3">
@@ -164,26 +168,33 @@
                         </div>
                         <div class="mb-3">
                             <strong>Price:</strong>
-                            <p th:text="${exam.price}+' JOD'"></p>
+                            <p th:if="${exam.price != null}" th:text="${exam.price}+' JOD'"></p>
                         </div>
                         <div class="m-4 text-center" sec:authorize="hasRole('ADMIN')">
                             <a th:href="@{/exams/edit(id=${exam.id})}" class="btn btn-warning">Edit</a>
                             <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteExamModal">Delete</a>
 
                             <!-- Delete Patient Confirmation Modal -->
-                            <div class="modal fade" id="deleteExamModal" tabindex="-1" aria-labelledby="deleteExamModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="deleteExamModal" tabindex="-1"
+                                 aria-labelledby="deleteExamModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header bg-danger text-white">
-                                            <h5 class="modal-title" id="deleteExamModalLabel">Delete Examination Confirmation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <h5 class="modal-title" id="deleteExamModalLabel">Delete Examination
+                                                Confirmation</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Are you sure you want to delete this examination? This action cannot be undone.</p>
+                                            <p>Are you sure you want to delete this examination? This action cannot be
+                                                undone.</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <a th:href="@{/exams/delete(id=${exam.id})}" class="btn btn-danger">Delete</a>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                            <a th:href="@{/exams/delete(id=${exam.id})}"
+                                               class="btn btn-danger">Delete</a>
                                         </div>
                                     </div>
                                 </div>
@@ -204,17 +215,19 @@
 <div class="m-4 text-center">
     <a href="/clients" class="btn btn-secondary">Back To Patients List</a>
     <a th:href="@{/clients/edit(id=${client.id})}" class="btn btn-warning">Edit patient</a>
-    <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteClientModal" sec:authorize="hasRole('ADMIN')">Delete Patient</a>
+    <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteClientModal"
+       sec:authorize="hasRole('ADMIN')">Delete Patient</a>
 
     <!-- Delete Patient Confirmation Modal -->
-    <div class="modal fade" id="deleteClientModal" tabindex="-1" aria-labelledby="deleteClientModalLabel" aria-hidden="true" sec:authorize="hasRole('ADMIN')">
+    <div class="modal fade" id="deleteClientModal" tabindex="-1" aria-labelledby="deleteClientModalLabel"
+         aria-hidden="true" sec:authorize="hasRole('ADMIN')">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="deleteClientModalLabel">Delete Patient Confirmation</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" >
+                <div class="modal-body">
                     <p>Are you sure you want to delete this patient? This action cannot be undone.</p>
                 </div>
                 <div class="modal-footer">
@@ -224,6 +237,7 @@
             </div>
         </div>
     </div>
+    <canvas id="prescriptionCanvas"></canvas>
 </div>
 
 
@@ -233,29 +247,39 @@
             $('.easyzoom').easyZoom();
         });
     });
+
     <!-- JavaScript to print the treatment content -->
 
-        function printTreatmentContent() {
+    function printTreatmentContent(id) {
         // Get the content inside the div
-        var contentToPrint = document.getElementById('treatment-content').innerHTML;
+        $.ajax({
+            url: '/exams/prescription?id=' + id,
+            type: 'GET',
+            success: function (data) {
+                console.log(data)
+                // Open a new window for printing
+                var printWindow = window.open('', '', 'width=800,height=600');
 
-        // Open a new window for printing
-        var printWindow = window.open('', '', 'width=800,height=600');
+                // Write the content returned from the server to the new window
+                printWindow.document.write(data);
+                printWindow.document.close();
 
-        // Write the content to the new window
-        printWindow.document.write('<html><head><title>Print Treatment</title>');
-        printWindow.document.write('<link rel="stylesheet" href="path_to_your_stylesheet.css">');  // Optionally link a stylesheet
-        printWindow.document.write('</head><body>');
-        printWindow.document.write('<h3>Treatment</h3>');
-        printWindow.document.write(contentToPrint);  // Add the content to be printed
-        printWindow.document.write('</body></html>');
+                // Trigger the print dialog
+                printWindow.print();
 
-        // Close the document in the print window
-        printWindow.document.close();
-
-        // Trigger the print dialog
-        printWindow.print();
+                // Optional: Close the print window after printing
+                printWindow.onafterprint = function() {
+                    printWindow.close();
+                };
+            },
+            error: function (xhr, status, error) {
+                console.error("An error occurred: " + error);
+                alert("Failed to retrieve data. Please try again later.");
+            }
+        });
     }
+
+
 </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.project.clinic.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,9 +18,13 @@ public class Exam {
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
+    @Lob
     private String symptoms;
+    @Lob
     private  String diagnosis;
+    @Lob
     private String management;
+    @Lob
     private String treatment;
     private LocalDate dateOfReExamination;
     private LocalDate dateLastExam;
