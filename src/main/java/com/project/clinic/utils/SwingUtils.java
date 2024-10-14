@@ -9,7 +9,7 @@ import java.awt.datatransfer.StringSelection;
 
 public class SwingUtils {
     private static JFrame loadingFrame;
-    private static final String ICON_PATH = "img/icon.png";
+    private static final String ICON_PATH = "Clinic.ico";
     private static final Font DEFAULT_FONT_BOLD_14 = new Font("Arial", Font.BOLD, 14);
     private static final Font DEFAULT_FONT_BOLD_16 = new Font("Arial", Font.BOLD, 16);
     private static final Color SHUTDOWN_BUTTON_COLOR = new Color(220, 53, 69); 

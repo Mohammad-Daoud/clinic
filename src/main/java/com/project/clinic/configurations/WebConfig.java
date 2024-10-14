@@ -22,7 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations(IMAGE_DIR);
 
         registry.addResourceHandler(FAV_ICON)
-                .addResourceLocations(FAV_ICON_LOCATION);
+                .addResourceLocations(FAV_ICON_LOCATION)
+                .addResourceLocations("Clinic.ico");
     }
 
 
