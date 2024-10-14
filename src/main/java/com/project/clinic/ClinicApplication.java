@@ -1,19 +1,17 @@
 package com.project.clinic;
 
-import com.project.clinic.utils.NetworkUtil;
-import com.project.clinic.utils.SwaggerUtils;
+import com.project.clinic.utils.SwingUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import static com.project.clinic.utils.NetworkUtil.getUrl;
 
 @SpringBootApplication
 public class ClinicApplication {
 
     public static void main(String[] args) {
+        SwingUtils.showLoadingMessage();
         ApplicationContext context = SpringApplication.run(ClinicApplication.class, args);
-        SwaggerUtils.openUIWindow(context);
+        SwingUtils.openUIWindow(context);
+        SwingUtils.closeLoadingMessage();
     }
-
 }
