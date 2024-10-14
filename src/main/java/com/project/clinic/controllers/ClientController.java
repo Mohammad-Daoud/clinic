@@ -3,6 +3,7 @@ package com.project.clinic.controllers;
 import com.project.clinic.models.Client;
 import com.project.clinic.services.ClientImageService;
 import com.project.clinic.services.ClientService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
@@ -34,12 +35,16 @@ public class ClientController {
     @GetMapping
     public String viewAllClients(Model model,
                                  @RequestParam(value = "page", defaultValue = "0") int page,
-                                 @RequestParam(value = "size", defaultValue = "10") int size) {
+                                 @RequestParam(value = "size", defaultValue = "10") int size,
+                                 HttpSession session) {
         Page<Client> clientsPage = clientService.getClientsWithReExaminationToday(PageRequest.of(page, size));
         model.addAttribute("clientsPage", clientsPage);
         model.addAttribute("today",true);
         model.addAttribute("todayDate", LocalDate.now());
         model.addAttribute("clientExistsForDefaultPage",!clientsPage.isEmpty());
+        String notifyPopup = String.valueOf(session.getAttribute("dontShowRescheduledModal"));
+        session.setAttribute("dontShowRescheduledModal", !"null".equals(notifyPopup) && Boolean.parseBoolean(notifyPopup));
+
         return "clients";
     }
 

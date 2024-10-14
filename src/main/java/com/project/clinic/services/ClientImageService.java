@@ -27,18 +27,18 @@ public class ClientImageService {
         this.clientRepository = clientRepository;
     }
 
-    public String saveClientImage(MultipartFile imageFile) throws IOException {
+    public synchronized String saveClientImage(MultipartFile imageFile) throws IOException {
         File directory = new File(UPLOAD_DIR);
         if (!directory.exists()) {
             directory.mkdirs();
         }
         String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-        Path filepath = Paths.get(UPLOAD_DIR, filename);
+        Path filepath = Paths.get(UPLOAD_DIR, filename.toLowerCase());
         Files.copy(imageFile.getInputStream(), filepath, StandardCopyOption.REPLACE_EXISTING);
         return "/images/" + filename;
     }
 
-    public void deleteImage(Long clientId, String imageUrl) {
+    public synchronized void deleteImage(Long clientId, String imageUrl) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException(clientId));
 
@@ -53,7 +53,7 @@ public class ClientImageService {
         }
     }
 
-    public void addImages(Long clientId, List<MultipartFile> imageFiles) throws IOException {
+    public synchronized void addImages(Long clientId, List<MultipartFile> imageFiles) throws IOException {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException(clientId));
 

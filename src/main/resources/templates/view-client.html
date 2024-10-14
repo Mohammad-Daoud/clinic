@@ -49,6 +49,46 @@
         .btn-primary:hover {
             background-color: #218838;
         }
+
+        .modal-body {
+            max-height: 80vh; /* Set a maximum height to 80% of the viewport height */
+            overflow-y: auto; /* Enable vertical scrolling if the content exceeds the modal height */
+        }
+
+        .carousel-item {
+            max-height: 100vh; /* Limit height of carousel items to fit in modal */
+        }
+
+        embed {
+            max-height: 100vh; /* Restrict height for embedded PDF viewers */
+            width: 75%;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: auto; /* Shrink button to fit content */
+            height: auto; /* Shrink button to fit content */
+            position: absolute; /* Keep buttons in position */
+            top: 50%; /* Vertically center */
+            transform: translateY(-50%); /* Ensure proper vertical alignment */
+            z-index: 1; /* Ensure buttons stay above carousel content */
+        }
+
+        .carousel-control-prev {
+            left: 10px; /* Position the previous button on the left side */
+        }
+
+        .carousel-control-next {
+            right: 10px; /* Position the next button on the right side */
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            width: 30px; /* Set the icon size */
+            height: 30px; /* Set the icon size */
+            padding: 10px;
+            background-size: 100%; /* Ensure the icon covers its entire area */
+        }
     </style>
 </head>
 <body>
@@ -101,19 +141,33 @@
                     <div class="carousel-inner">
                         <div th:each="imageUrl, iterStat : ${client.imageUrls}"
                              class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active' : ''">
-                            <div class="easyzoom easyzoom--overlay">
+                            <div class="easyzoom easyzoom--overlay text-center">
                                 <a th:href="@{${imageUrl}}" th:data-standard="@{${imageUrl}}">
-                                    <img th:src="@{${imageUrl}}" class="d-block w-100" alt="Client Image">
+                                    <img th:if="${#strings.endsWith(imageUrl, '.jpg') or
+                                                  #strings.endsWith(imageUrl, '.png') or
+                                                  #strings.endsWith(imageUrl, '.jpeg')}"
+                                         th:src="@{${imageUrl}}" class="d-block w-100" alt="Client Attachment">
                                 </a>
+                                <div class="mt-2" th:unless="${#strings.endsWith(imageUrl, '.jpg') or
+                                    #strings.endsWith(imageUrl, '.png') or
+                                    #strings.endsWith(imageUrl, '.jpeg')}">
+                                    <a th:href="@{${imageUrl}}" class="btn btn-primary" target="_blank">
+                                        View Attachment
+                                    </a>
+                                </div>
+                                <div class="mt-2" th:if="${#strings.endsWith(imageUrl, '.pdf') or #strings.endsWith(imageUrl, '.txt')}">
+                                    <embed th:src="${imageUrl}" type="application/pdf" width="100%" height="500px">
+                                </div>
+
                             </div>
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    <button class="carousel-control-prev bg-dark rounded-2" type="button" data-bs-target="#carouselExampleIndicators"
                             data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    <button class="carousel-control-next bg-dark rounded-2" type="button" data-bs-target="#carouselExampleIndicators"
                             data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
@@ -159,7 +213,10 @@
                             <strong>Treatment:</strong>
                             <p id="treatment-content" th:text="${exam.treatment}"></p>
                             <!-- Add a Print button -->
-                            <button class="btn btn-primary"  th:onclick="'javascript:printTreatmentContent(' + ${exam.id} + ')'" >Print Treatment (Prescription)</button>
+                            <button class="btn btn-primary"
+                                    th:onclick="'javascript:printTreatmentContent(' + ${exam.id} + ')'">Print Treatment
+                                (Prescription)
+                            </button>
                         </div>
 
                         <div class="mb-3">
@@ -268,7 +325,7 @@
                 printWindow.print();
 
                 // Optional: Close the print window after printing
-                printWindow.onafterprint = function() {
+                printWindow.onafterprint = function () {
                     printWindow.close();
                 };
             },

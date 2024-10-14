@@ -22,35 +22,62 @@
          th:if="${today}">For <span class="fw-bold" th:text="${#temporals.format(todayDate, 'EEEE, dd/MMMM/yyyy')}+' '"></span>
     </div>
 
-  <div th:if="${clientExistsForDefaultPage}">
-    <!-- Modal Structure -->
-    <div class="modal fade" id="rescheduledAppointmentsModal" tabindex="-1" aria-labelledby="rescheduledAppointmentsModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="rescheduledAppointmentsModalLabel">Rescheduled Appointments</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="alert alert-warning" role="alert">
-              <strong>Notice:</strong> You have rescheduled appointments today!
+    <div th:if="${clientExistsForDefaultPage && !session.dontShowRescheduledModal}">
+        <!-- Modal Structure -->
+        <div class="modal fade" id="rescheduledAppointmentsModal" tabindex="-1" aria-labelledby="rescheduledAppointmentsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rescheduledAppointmentsModalLabel">Rescheduled Appointments</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning" role="alert">
+                            <strong>Notice:</strong> You have rescheduled appointments today!
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-check me-3">
+                            <input class="form-check-input border-warning" type="checkbox" id="dontShowAgain" name="dontShowAgain" />
+                            <label class="form-check-label" for="dontShowAgain">
+                                Don't show this again
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
-          </div>
         </div>
-      </div>
+
+        <!-- Script to automatically show the modal when condition is true -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var rescheduledAppointmentsModal = new bootstrap.Modal(document.getElementById('rescheduledAppointmentsModal'));
+                rescheduledAppointmentsModal.show();
+
+                // Event listener to handle checkbox state
+                document.getElementById('dontShowAgain').addEventListener('change', function () {
+                    if (this.checked) {
+                        // Save checkbox state via an AJAX call to the server
+                        fetch('/setSessionValue', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ dontShowAgain: true })
+                        }).then(response => {
+                            if (response.ok) {
+                                console.log('Session value updated');
+                            } else {
+                                console.log('Error updating session value');
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
     </div>
 
-    <!-- Script to automatically show the modal when condition is true -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        var rescheduledAppointmentsModal = new bootstrap.Modal(document.getElementById('rescheduledAppointmentsModal'));
-        rescheduledAppointmentsModal.show();
-      });
-    </script>
-  </div>
 
 
   <!-- Add New Client Button -->
@@ -113,7 +140,7 @@
     </div>
 
     <div th:if="${clientsPage.isEmpty()}">
-        <h2 class="text-center"> There is No Examinations For Today </h2>
+        <h2 class="text-center">No records available</h2>
     </div>
 
     <!-- Pagination Controls -->

@@ -6,7 +6,7 @@
   <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
   <th:block th:include="header :: header"></th:block>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<!--
   <style>
     .image-container {
       position: relative;
@@ -29,12 +29,57 @@
     .delete-button:hover {
       background-color: red;
     }
+  </style>-->
+
+  <style>
+    .image-container {
+      position: relative;
+      height: 250px; /* Set a fixed height for all containers */
+      width: 100%;   /* Ensure full width for the container */
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .grid-image {
+      height: 100%;
+      width: 100%;
+      object-fit: cover; /* Ensures image fits properly within the container without distortion */
+    }
+
+    .grid-pdf {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Keeps the content fit within the container */
+    }
+
+    .delete-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: rgba(255, 0, 0, 0.7);
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .delete-button:hover {
+      background-color: red;
+    }
+
+    .col-md-3, .col-sm-4, .col-xs-6 {
+      height: 250px; /* Set height for all columns to be the same */
+    }
+
   </style>
 </head>
 <body>
 
 <div class="container mt-4">
-  <h1 class="mb-3">Edit Images for Patient:
+  <h1 class="mb-3">Edit Attachments for Patient:
     <span th:text="' '+${client.firstName}"></span>
     <span th:text="' ' + ${client.lastName}"></span></h1>
 
@@ -43,11 +88,24 @@
     <h3>Current Images</h3>
     <div class="row">
       <!-- Image Grid -->
-      <div class="col-12 d-flex flex-wrap">
-        <div class="row g-3">
-          <div class="col-md-3 col-sm-4 col-xs-6" th:each="imageUrl : ${client.imageUrls}">
-            <div class="image-container">
-              <img th:src="${imageUrl}" class="img-thumbnail"/>
+      <div class="col-12 d-flex flex-wrap justify-content-center">
+        <div class="row g-3 w-100">
+          <div class="col-md-3 col-sm-4 col-xs-6 d-flex justify-content-center"
+               th:each="imageUrl : ${client.imageUrls}">
+            <div class="image-container text-center">
+              <img th:if="${#strings.endsWith(imageUrl, '.jpg') or
+                            #strings.endsWith(imageUrl, '.png') or
+                            #strings.endsWith(imageUrl, '.jpeg')}"
+                   th:src="${imageUrl}" class="img-thumbnail grid-image" />
+              <a th:unless="${#strings.endsWith(imageUrl, '.jpg') or
+                            #strings.endsWith(imageUrl, '.png') or
+                            #strings.endsWith(imageUrl, '.jpeg')}" th:href="@{${imageUrl}}"
+                 class="btn btn-primary text-center mt-5 w-100 h-100" target="_blank">View Attachment</a>
+
+              <div class="mt-2" th:if="${#strings.endsWith(imageUrl, '.pdf') or #strings.endsWith(imageUrl, '.txt')}">
+                <embed th:src="${imageUrl}" type="application/pdf" class="grid-pdf"/>
+              </div>
+
               <form th:action="@{/clients/images/delete}" method="post" class="d-inline">
                 <input type="hidden" name="id" th:value="${client.id}"/>
                 <input type="hidden" name="imageUrl" th:value="${imageUrl}"/>
@@ -58,17 +116,26 @@
         </div>
       </div>
     </div>
+
+  </div>
+
+  <div th:unless="${client.imageUrls != null && !client.imageUrls.isEmpty()}">
+    <h3 class="mb-3 text-center"> <span th:text="' '+${client.firstName}"></span>
+      <span th:text="' ' + ${client.lastName}"></span> doesn't have any attachments.</h3>
   </div>
 
   <!-- Upload new images -->
-  <h3>Upload New Images</h3>
+  <h3 class="mt-3">Upload New Attachments</h3>
   <form th:action="@{/clients/images/add}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" th:value="${client.id}"/>
     <div class="mb-3">
       <label for="imageFiles" class="form-label">Choose Images</label>
       <input type="file" id="imageFiles" name="imageFiles" class="form-control" multiple required/>
     </div>
+    <p class="bg-warning fw-semibold text-center rounded-2">The supported file types are: .jpg, .png, .jpeg, .pdf, and .txt. <br>
+      Files of other formats cannot be previewed and will be downloaded for viewing.</p>
     <button type="submit" class="btn btn-primary">Save & Upload Images</button>
+
   </form>
 
   <!-- Go back to client details -->
