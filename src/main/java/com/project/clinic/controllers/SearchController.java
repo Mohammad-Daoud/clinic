@@ -2,6 +2,7 @@ package com.project.clinic.controllers;
 
 import com.project.clinic.models.Client;
 import com.project.clinic.services.SearchService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,7 @@ public class SearchController {
     public String searchClients(@RequestParam("query") String query,
                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                 @RequestParam(value = "size", defaultValue = "10") int size,
-                                Model model) {
+                                Model model, HttpSession session) {
         Page<Client> clientsPage = searchService.searchClients(query, PageRequest.of(page, size));
         model.addAttribute("clientsPage", clientsPage);
         model.addAttribute("query", query);

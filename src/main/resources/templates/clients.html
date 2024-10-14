@@ -22,9 +22,9 @@
          th:if="${today}">For <span class="fw-bold" th:text="${#temporals.format(todayDate, 'EEEE, dd/MMMM/yyyy')}+' '"></span>
     </div>
 
-    <div th:if="${clientExistsForDefaultPage && !session.dontShowRescheduledModal}">
+    <div th:if="${clientExistsForDefaultPage}">
         <!-- Modal Structure -->
-        <div class="modal fade" id="rescheduledAppointmentsModal" tabindex="-1" aria-labelledby="rescheduledAppointmentsModalLabel" aria-hidden="true">
+        <div th:if= "${!session.dontShowRescheduledModal}" class="modal fade" id="rescheduledAppointmentsModal" tabindex="-1" aria-labelledby="rescheduledAppointmentsModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">

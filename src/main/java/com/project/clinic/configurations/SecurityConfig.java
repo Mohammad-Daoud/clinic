@@ -31,7 +31,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/webjars/**", "/css/**", "/js/**", "/images/**","/image/**").permitAll() // Allow static resources
+                        .requestMatchers("/webjars/**", "/css/**", "/js/**", "/images/**","/image/**","/favicon.ico").permitAll() // Allow static resources
                         .requestMatchers("/login").permitAll() // Allow public access to the login page;
                         .requestMatchers("/h2-console/**", "/clinicdb/**").hasRole("ADMIN")
                         .requestMatchers("/**").hasAnyRole("ADMIN", "USER") // Secure other endpoints
