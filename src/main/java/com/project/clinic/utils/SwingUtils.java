@@ -2,10 +2,13 @@ package com.project.clinic.utils;
 
 import org.springframework.context.ApplicationContext;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.IOException;
 
 public class SwingUtils {
     private static JFrame loadingFrame;
@@ -43,11 +46,21 @@ public class SwingUtils {
 
     private static JFrame createFrame(int width, int height, int closeOperation) {
         JFrame frame = new JFrame("Clinic System");
-        frame.setIconImage(new ImageIcon(ICON_PATH).getImage());
+        frame.setIconImage(getIconImage());
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(closeOperation);
         frame.setLocationRelativeTo(null);
         return frame;
+    }
+
+    private static Image getIconImage() {
+        try {
+            Image icoImage = ImageIO.read(new File(ICON_PATH));
+            return new ImageIcon(icoImage).getImage();
+        }catch (IOException e){
+            return new ImageIcon(ICON_PATH).getImage();
+        }
+
     }
 
     private static JPanel createMainPanel(String url, ApplicationContext context) {
