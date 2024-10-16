@@ -10,13 +10,10 @@
     <!-- Header include -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon"  th:href="@{'/favicon.ico'}" size="any">
-
+    <th:block th:include="header :: header"></th:block>
     <style>
         body {
             background-color: #f3f4f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             margin: 0;
         }
@@ -92,7 +89,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container mt-5">
     <h1>Admin Actions</h1>
 
     <!-- Change Password Section -->

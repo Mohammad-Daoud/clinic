@@ -2,19 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Header</title>
-    <link rel="icon"  th:href="@{'/favicon.ico'}" size="any">
+    <link rel="icon" th:href="@{'/favicon.ico'}" size="any">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="description" content="Search for clients by name, phone, or ID.">
     <meta name="keywords" content="Search, Clients, Name, Phone, ID">
-    <meta name="author" content="Your Project Name">
+    <meta name="author" content="Clinic System">
     <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
 </head>
 <body>
-<header class="container">
+<header class="container bg-light">
     <div class="d-flex justify-content-between align-items-center m-3">
+
+        <!-- Site Icon on the Left -->
+        <div>
+            <a href="/" class="d-block">
+                <img th:src="@{'/favicon.ico'}" alt="Site Icon" class="img-fluid" style="width: 30px; height: 30px;">
+            </a>
+        </div>
+
+        <!-- Centered Search Form -->
+        <div class="d-flex justify-content-center w-100">
+            <form th:action="@{/search}" method="get" class="row gx-3 gy-2 align-items-center w-50">
+                <div class="col-12">
+                    <div class="input-group input-group-sm">
+                        <input type="text" id="query" name="query" placeholder="Search by name, phone, or ID"
+                               class="form-control border-primary" />
+                        <button type="submit" class="btn btn-outline-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none" />
+                                <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <!-- Dropdown for Admin, Logout, Shutdown -->
-        <div class="dropdown" >
+        <div class="dropdown">
             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 Actions
             </button>
@@ -25,29 +51,8 @@
                 <li><a class="dropdown-item link-danger" th:href="@{/exit}" sec:authorize="hasRole('ADMIN')">Shutdown</a></li>
             </ul>
         </div>
-
-        <!-- Centered Search Form -->
-        <div class="d-flex justify-content-center w-100 ms-auto pe-lg-1">
-            <form th:action="@{/search}" method="get" class="row gx-3 gy-2 align-items-center w-75">
-                <div class="col-sm-8">
-                    <div class="input-group input-group-sm">
-                        <input type="text" id="query" name="query" placeholder="Search by name, phone, or ID"
-                               class="form-control border-primary" />
-                        <button type="submit" class="btn btn-outline-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none" />
-                                <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            </svg>
-
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-
-
     </div>
+    <hr class="mb-auto mt-2">
 </header>
 
 <!-- Include Bootstrap JS, Popper.js, and its dependencies -->
