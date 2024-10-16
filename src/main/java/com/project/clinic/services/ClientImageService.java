@@ -33,7 +33,8 @@ public class ClientImageService {
             directory.mkdirs();
         }
         String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-        Path filepath = Paths.get(UPLOAD_DIR, filename.toLowerCase());
+        filename = filename.toLowerCase();
+        Path filepath = Paths.get(UPLOAD_DIR, filename);
         Files.copy(imageFile.getInputStream(), filepath, StandardCopyOption.REPLACE_EXISTING);
         return "/images/" + filename;
     }
