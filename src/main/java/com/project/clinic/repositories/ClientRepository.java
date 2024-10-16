@@ -43,7 +43,7 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
 
 
     @Query("SELECT DISTINCT c FROM Client c LEFT JOIN c.exams e " +
-            "WHERE (e.dateOfReExamination = :date) OR (e IS NULL AND c.dateOfCreation = :date)")
+            "WHERE (e.dateOfReExamination = :date) OR (c.dateOfCreation = :date)")
     Page<Client> findLatestClientByExamOrCreationDate(@Param("date") LocalDate date, Pageable pageable);
 
 }

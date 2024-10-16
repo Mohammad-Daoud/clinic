@@ -35,6 +35,7 @@ public class ExamService {
     public void addExam(Exam exam, Long clientId) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException(clientId));
+        exam.setId(null);
         exam.setClient(client);
         exam.setDateLastExam(LocalDate.now());
         examRepository.save(exam);

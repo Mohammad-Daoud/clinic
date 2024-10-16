@@ -187,15 +187,16 @@
     <div th:if="${client.exams != null && !client.exams.isEmpty()}">
         <div class="accordion" id="examinationsAccordion">
             <div th:each="exam, iterStat : ${client.exams}" class="accordion-item">
-                <h2 class="accordion-header" id="examHeading${iterStat.index}">
+                <h2 class="accordion-header" th:id="'examHeading' + ${iterStat.index}">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseExam${iterStat.index}"
-                            aria-expanded="false" aria-controls="collapseExam${iterStat.index}">
-                        <span th:text="'Examination on '+ ${#temporals.format(exam.dateLastExam, 'dd MMM, yyyy')}"></span>
+                            th:attr="data-bs-target='#collapseExam' + ${iterStat.index}, aria-controls='collapseExam' + ${iterStat.index}"
+                            aria-expanded="false">
+                        <span th:text="'Examination on ' + ${#temporals.format(exam.dateLastExam, 'dd MMM, yyyy')}"></span>
                     </button>
                 </h2>
-                <div id="collapseExam${iterStat.index}" class="accordion-collapse collapse"
-                     aria-labelledby="examHeading${iterStat.index}" data-bs-parent="#examinationsAccordion">
+                <div th:id="'collapseExam' + ${iterStat.index}" class="accordion-collapse collapse"
+                     th:attr="aria-labelledby='examHeading' + ${iterStat.index}"
+                     data-bs-parent="#examinationsAccordion">
                     <div class="accordion-body">
                         <div class="mb-3">
                             <strong>Symptoms:</strong>
