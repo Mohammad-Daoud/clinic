@@ -76,4 +76,8 @@ public class ExamService {
         client.setStatus(ClientsUtils.calculatePatientStatus(client));
         clientRepository.save(client);
     }
+
+    public List<Exam> findExaminationsBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return examRepository.findExaminationsBetweenDates(startDate, endDate);
+    }
 }

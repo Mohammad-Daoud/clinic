@@ -1,5 +1,6 @@
 package com.project.clinic.controllers;
 
+import com.project.clinic.dto.ReportDTO;
 import com.project.clinic.models.User;
 import com.project.clinic.services.DatabaseService;
 import com.project.clinic.services.FileService;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -95,7 +97,8 @@ public class AdminController {
     }
 
     @GetMapping("/admin-actions")
-    public String showAdminActions() {
+    public String showAdminActions(Model model) {
+        model.addAttribute("reportDTO", new ReportDTO());
         return "admin-actions";
     }
 
