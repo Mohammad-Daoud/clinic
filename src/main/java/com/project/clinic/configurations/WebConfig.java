@@ -11,8 +11,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static final String IMAGE_DIR = "file:upload/images/";
     private static final String IMAGE_URL_PATTERN = "/images/**";
-    private static final String FAV_ICON= "/favicon.ico";
-    private static final String FAV_ICON_LOCATION = "file:img/favicon.ico";
+    private static final String FAV_ICON_PATTERN = "/favicon.ico";
+    private static final String FAV_ICON_LOCATION = "classpath:static/img/";
+
 
 
 
@@ -21,9 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler(IMAGE_URL_PATTERN)
                 .addResourceLocations(IMAGE_DIR);
 
-        registry.addResourceHandler(FAV_ICON)
-                .addResourceLocations(FAV_ICON_LOCATION)
-                .addResourceLocations("Clinic.ico");
+        registry.addResourceHandler(FAV_ICON_PATTERN)
+                .addResourceLocations(FAV_ICON_LOCATION);
     }
 
 
