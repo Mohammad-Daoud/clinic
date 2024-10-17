@@ -1,0 +1,1 @@
+jpackage --input target --name Clinic --main-jar clinic-0.0.1-SNAPSHOT.jar --type exe --icon img/favicon.ico --resource-dir img --win-dir-chooser --win-shortcut --win-shortcut-prompt --win-per-user-install
