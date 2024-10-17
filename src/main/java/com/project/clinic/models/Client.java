@@ -28,6 +28,9 @@ public class Client {
     @Column(updatable = false)
     private LocalDate dateOfCreation;
 
+    @Enumerated(EnumType.STRING)  // This will store the enum as a String in the DB
+    private ClientStatus status;
+
     private int age;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)

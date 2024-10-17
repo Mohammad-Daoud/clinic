@@ -3,13 +3,16 @@ package com.project.clinic.services;
 import com.project.clinic.exceptions.ClientNotFoundException;
 import com.project.clinic.exceptions.ExamNotFoundException;
 import com.project.clinic.models.Client;
+import com.project.clinic.models.ClientStatus;
 import com.project.clinic.models.Exam;
 import com.project.clinic.repositories.ClientRepository;
 import com.project.clinic.repositories.ExamRepository;
+import com.project.clinic.utils.ClientsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ExamService {
@@ -39,13 +42,16 @@ public class ExamService {
         exam.setClient(client);
         exam.setDateLastExam(LocalDate.now());
         examRepository.save(exam);
+        setClientStatus(clientId);
     }
+
 
     public void updateExam(Exam exam) {
         Exam existingExam = getExamById(exam.getId());
 
         existingExam.updateExamDetails(exam);
         examRepository.save(existingExam);
+        setClientStatus(getClientIdByExamId(existingExam.getId()));
     }
 
     public void deleteExamById(Long examId) {
@@ -53,5 +59,13 @@ public class ExamService {
             throw new ExamNotFoundException(examId);
         }
         examRepository.deleteById(examId);
+        setClientStatus(getClientIdByExamId(examId));
+    }
+
+    private void setClientStatus(Long clientId){
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(()->new ClientNotFoundException(clientId));
+        client.setStatus(ClientsUtils.calculatePatientStatus(client));
+        clientRepository.save(client);
     }
 }

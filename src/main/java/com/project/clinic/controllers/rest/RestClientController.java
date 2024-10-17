@@ -1,4 +1,4 @@
-package com.project.clinic.controllers;
+package com.project.clinic.controllers.rest;
 
 import com.project.clinic.models.Exam;
 import com.project.clinic.services.ClientService;

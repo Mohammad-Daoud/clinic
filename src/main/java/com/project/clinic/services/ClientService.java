@@ -2,7 +2,9 @@ package com.project.clinic.services;
 
 import com.project.clinic.exceptions.ClientNotFoundException;
 import com.project.clinic.models.Client;
+import com.project.clinic.models.ClientStatus;
 import com.project.clinic.repositories.ClientRepository;
+import com.project.clinic.utils.ClientsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,7 @@ public class ClientService {
     }
     public void addClient(Client client) {
         client.setDateOfCreation(LocalDate.now());
+        client.setStatus(ClientStatus.OPEN);
         clientRepository.save(client);
     }
 
@@ -56,12 +59,13 @@ public class ClientService {
         existingClient.setPhoneNumber(client.getPhoneNumber());
         existingClient.setAge(client.getAge());
         existingClient.setImageUrls(client.getImageUrls());
+        existingClient.setStatus(ClientsUtils.calculatePatientStatus(existingClient));
         clientRepository.save(existingClient);
     }
 
     public Page<Client> getClientsWithReExaminationToday(Pageable pageable) {
         LocalDate today = LocalDate.now();
-        return clientRepository.findLatestClientByExamOrCreationDate(today, pageable);
+        return clientRepository.findClientsWithExaminationsOrCreatedToday(today, pageable);
     }
 
     public String nameContainsSpaces(String ... names) {
