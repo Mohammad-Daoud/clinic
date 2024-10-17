@@ -30,6 +30,8 @@ public class Exam {
     private LocalDate dateLastExam;
     private BigDecimal price;
 
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
 
     public void updateExamDetails(Exam updatedExam) {
         this.symptoms = updatedExam.getSymptoms();
@@ -37,6 +39,15 @@ public class Exam {
         this.management = updatedExam.getManagement();
         this.treatment = updatedExam.getTreatment();
         this.dateOfReExamination = updatedExam.getDateOfReExamination();
+        if(updatedExam.getPrice() == null){
+            updatedExam.setPrice(new BigDecimal(0));
+        }
+        this.price = updatedExam.getPrice();
+        if (updatedExam.getPaymentType() == null){
+            this.paymentType = PaymentType.Cash;
+        }else {
+            this.paymentType = updatedExam.getPaymentType();
+        }
     }
 }
 

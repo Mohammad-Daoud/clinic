@@ -5,12 +5,14 @@ import com.project.clinic.exceptions.ExamNotFoundException;
 import com.project.clinic.models.Client;
 import com.project.clinic.models.ClientStatus;
 import com.project.clinic.models.Exam;
+import com.project.clinic.models.PaymentType;
 import com.project.clinic.repositories.ClientRepository;
 import com.project.clinic.repositories.ExamRepository;
 import com.project.clinic.utils.ClientsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -41,6 +43,12 @@ public class ExamService {
         exam.setId(null);
         exam.setClient(client);
         exam.setDateLastExam(LocalDate.now());
+        if(exam.getPrice() == null){
+            exam.setPrice(new BigDecimal(0));
+        }
+        if (exam.getPaymentType() == null){
+           exam.setPaymentType(PaymentType.Cash);
+        }
         examRepository.save(exam);
         setClientStatus(clientId);
     }

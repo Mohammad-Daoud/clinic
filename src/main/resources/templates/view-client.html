@@ -227,6 +227,8 @@
                         <div class="mb-3">
                             <strong>Price:</strong>
                             <p th:if="${exam.price != null}" th:text="${exam.price}+' JOD'"></p>
+                            <p  th:text="'Payment method: '+${exam.paymentType.displayName}"></p>
+
                         </div>
                         <div class="m-4 text-center" sec:authorize="hasRole('ADMIN')">
                             <a th:href="@{/exams/edit(id=${exam.id})}" class="btn btn-warning">Edit</a>
