@@ -63,11 +63,12 @@ public class ExamService {
     }
 
     public void deleteExamById(Long examId) {
+        Long clientId = getClientIdByExamId(examId);
         if (!examRepository.existsById(examId)) {
             throw new ExamNotFoundException(examId);
         }
         examRepository.deleteById(examId);
-        setClientStatus(getClientIdByExamId(examId));
+        setClientStatus(clientId);
     }
 
     private void setClientStatus(Long clientId){
