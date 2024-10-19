@@ -5,8 +5,6 @@
 <head>
     <title>Report</title>
     <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
-
-    <!-- Bootstrap and jQuery JS -->
     <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
     <style>
@@ -24,31 +22,60 @@
             background-color: #45a049;
         }
 
-        /* Hide elements during print */
         @media print {
             .print-btn, .reportPrint {
                 display: none;
             }
 
             .container {
-                margin: 0;
-                padding: 0;
-                width: 100%;
+                margin-top: 2rem;
+                padding: 15px;
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
             }
 
             .table th, .table td {
-                border: 1px solid #000;
-                padding: 8px;
+                padding: 12px;
                 text-align: center;
-                font-size: 12px;
+            }
+
+            .table thead th {
+                background-color: #f8f9fa;
+                font-weight: bold;
+            }
+
+            .table tbody tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+            }
+
+            .table {
+                width: 100%;
+                margin-bottom: 1rem;
+                border-collapse: collapse;
             }
 
             body {
                 font-size: 12px;
             }
+
+            /* Ensure that grid layout is visible during print */
+            .row {
+                display: flex; /* Use flexbox to ensure columns are side by side */
+                justify-content: space-between; /* Space out columns */
+            }
+
+            .col-md-6 {
+                width: 48%; /* Ensure columns take appropriate width */
+                box-sizing: border-box; /* Include padding and borders in width calculation */
+            }
         }
 
-        /* Screen-specific styles */
+
         @media screen {
             .container {
                 margin-top: 2rem;
@@ -86,18 +113,15 @@
 </head>
 
 <body>
-<!-- Optional report header -->
 <div class="reportPrint">
     <th:block th:include="header :: header"></th:block>
 </div>
 
 <div class="container mt-4">
     <div class="text-center mb-3">
-        <img alt="header"
-             th:src="@{/static/img/reportHeader.png}"/>
+        <img alt="header" th:src="@{/static/img/reportHeader.png}"/>
     </div>
 
-    <!-- Table displaying report data -->
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
@@ -105,12 +129,11 @@
                 <th>Patient Name</th>
                 <th>Examination Date</th>
                 <th>Price</th>
-                <th>Payment Type</th> <!-- CASH or Insurance -->
+                <th>Payment Type</th>
                 <th class="reportPrint">Info</th>
             </tr>
             </thead>
             <tbody>
-            <!-- Iterate over the report data -->
             <tr th:each="exam : ${examinations}">
                 <td th:text="${exam.client.firstName} + ' ' + ${exam.client.lastName}"></td>
                 <td th:text="${exam.dateLastExam}"></td>
@@ -123,19 +146,28 @@
             </tbody>
         </table>
     </div>
-
-    <!-- Totals section -->
-    <div class="fw-bold">
-        <p>Total Insurance Visits: <span th:text="${totalInsuranceVisits}"></span></p>
-        <p>Total Cash Visits: <span th:text="${totalCashVisits}"></span></p>
-        <p>Total Visits: <span th:text="${totalVisits}"></span></p>
-        <p>Total Cash Amount: <span th:text="${totalCashAmount}"></span></p>
-        <p>Total Insurance Amount: <span th:text="${totalInsuranceAmount}"></span></p>
-        <p>Total Amount: <span th:text="${totalAmount}"></span></p>
+    <hr>
+    <div class="mt-5">
+        <h2>Summary:</h2>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="fw-bold">
+                <p>Total Cash Visits: <span th:text="${totalCashVisits}"></span></p>
+                <p>Total Insurance Visits: <span th:text="${totalInsuranceVisits}"></span></p>
+                <p>Total Visits: <span th:text="${totalVisits}"></span></p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="fw-bold">
+                <p>Total Cash Amount: <span th:text="${totalCashAmount}+ ' JOD'"></span></p>
+                <p>Total Insurance Amount: <span th:text="${totalInsuranceAmount}+' JOD'"></span></p>
+                <p>Total Amount: <span th:text="${totalAmount}+ ' JOD'"></span></p>
+            </div>
+        </div>
     </div>
 
-    <!-- Print button -->
-    <button class="print-btn rounded-2" onclick="printReport()">Print Report</button>
+    <button class="print-btn rounded-2 mt-5" onclick="printReport()">Print Report</button>
 </div>
 
 <script>
