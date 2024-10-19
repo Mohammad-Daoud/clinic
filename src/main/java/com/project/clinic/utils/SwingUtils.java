@@ -1,6 +1,9 @@
 package com.project.clinic.utils;
 
+import com.project.clinic.acs.LicenseManager;
+import com.project.clinic.acs.LicenseValidator;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,10 +37,15 @@ public class SwingUtils {
     }
 
   
-    public static void openUIWindow(ApplicationContext context) {
+    public static void openUIWindow(ConfigurableApplicationContext context) {
         String url = NetworkUtil.getUrl(context);
-        System.setProperty("java.awt.headless", "false"); 
-
+        System.setProperty("java.awt.headless", "false");
+        LicenseManager.createLicenseIfNotExists();
+        boolean hasLicense = LicenseValidator.validateLicense();
+        if (!hasLicense) {
+            SwingUtils.showLicenseErrorDialog(context);
+            return;
+        }
         JFrame frame = createFrame(600, 400, JFrame.EXIT_ON_CLOSE);
         JPanel panel = createMainPanel(url, context);
         frame.add(panel, BorderLayout.CENTER);
@@ -148,5 +156,16 @@ public class SwingUtils {
 
         openSystemButton.addActionListener(e -> NetworkUtil.openBrowser(NetworkUtil.getUrl(context)));
         return openSystemButton;
+    }
+
+    public static void showLicenseErrorDialog(ConfigurableApplicationContext context) {
+        context.close();
+        // Define the message for the dialog
+        String message = "You don't have a valid license. Please contact support.";
+        String title = "License Error";
+
+        // Show the error message as a dialog
+        closeLoadingMessage();
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
     }
 }

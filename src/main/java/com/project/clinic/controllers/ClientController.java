@@ -59,9 +59,6 @@ public class ClientController {
                             @RequestParam("imageFiles") List<MultipartFile> imageFiles) throws IOException {
 
         // Check if a client with the same name combination already exists
-     /*   if (clientService.clientExists(client.getFirstName(), null,null, client.getLastName())) {
-            result.rejectValue("firstName", "error.client", "A client with a similar name already exists.");
-        }*/
         String firstName = client.getFirstName().trim();
         String lastName = client.getLastName().trim();
         String namesError = clientService.nameContainsSpaces(firstName, null, null, lastName);
