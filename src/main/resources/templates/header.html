@@ -47,8 +47,6 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" th:href="@{/admin-actions}" sec:authorize="hasRole('ADMIN')">Admin Actions</a></li>
                 <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
-                <div class="dropdown-divider" sec:authorize="hasRole('ADMIN')"></div>
-                <li><a class="dropdown-item link-danger" th:href="@{/exit}" sec:authorize="hasRole('ADMIN')">Shutdown</a></li>
             </ul>
         </div>
     </div>

@@ -203,15 +203,15 @@
                     <div class="accordion-body">
                         <div class="mb-3">
                             <strong>Symptoms:</strong>
-                            <p th:text="${exam.symptoms}"></p>
+                            <p style="white-space: pre;" th:text="${exam.symptoms}"></p>
                         </div>
                         <div class="mb-3">
                             <strong>Diagnosis:</strong>
-                            <p th:text="${exam.diagnosis}"></p>
+                            <p style="white-space: pre;" th:text="${exam.diagnosis}"></p>
                         </div>
                         <div class="mb-3">
                             <strong>Management:</strong>
-                            <p th:text="${exam.management}"></p>
+                            <p style="white-space: pre;" th:text="${exam.management}"></p>
                         </div>
                         <div class="mb-3">
                             <strong>Treatment:</strong>
@@ -223,7 +223,7 @@
                                     (Prescription)
                                 </button>
                             </div>
-                            <p id="treatment-content" th:text="${exam.treatment}"></p>
+                            <p id="treatment-content" style="white-space: pre;" th:text="${exam.treatment}"></p>
                         </div>
 
                         <div class="mb-3">

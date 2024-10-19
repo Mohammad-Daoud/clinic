@@ -1,230 +1,250 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Edit Examination</title>
+    <title>Edit Examination</title>
 
-  <th:block th:include="header :: header"></th:block>
+    <th:block th:include="header :: header"></th:block>
 
-  <!-- Include Bootstrap CSS -->
-  <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Include Bootstrap CSS -->
+    <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
 
-  <!-- Include jQuery and Bootstrap JS -->
-  <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
-  <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+    <!-- Include jQuery and Bootstrap JS -->
+    <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    .accordion-item {
-      border: none;
-      margin-bottom: 10px;
-    }
+    <style>
+        .accordion-item {
+            border: none;
+            margin-bottom: 10px;
+        }
 
-    .accordion-button {
-      background-color: #007bff;
-      color: #fff;
-    }
+        .accordion-button {
+            background-color: #007bff;
+            color: #fff;
+        }
 
-    .accordion-button:not(.collapsed) {
-      background-color: #0056b3;
-      color: #fff;
-    }
+        .accordion-button:not(.collapsed) {
+            background-color: #0056b3;
+            color: #fff;
+        }
 
-    .btn-primary {
-      background-color: #28a745;
-      border: none;
-    }
+        .btn-primary {
+            background-color: #28a745;
+            border: none;
+        }
 
-    .btn-primary:hover {
-      background-color: #218838;
-    }
+        .btn-primary:hover {
+            background-color: #218838;
+        }
 
-    .btn-outline-primary {
-      color: #007bff;
-      border-color: #007bff;
-    }
+        .btn-outline-primary {
+            color: #007bff;
+            border-color: #007bff;
+        }
 
-    .btn-outline-primary:hover {
-      background-color: #007bff;
-      color: #fff;
-    }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
 
-    .form-control {
-      margin-bottom: 10px;
-    }
+        .form-control {
+            margin-bottom: 10px;
+        }
 
-    .error-message {
-      color: red;
-    }
-  </style>
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
-  <h1 class="mb-3">
-    <span th:text="'Edit Examination for: ' + ${client.firstName}"></span>
-    <span th:text="' ' + ${client.lastName}"></span>
-  </h1>
+    <h1 class="mb-3">
+        <span th:text="'Edit Examination for: ' + ${client.firstName}"></span>
+        <span th:text="' ' + ${client.lastName}"></span>
+    </h1>
 
-  <!-- Error message container -->
-  <div id="errorMessages" class="alert alert-danger" style="display: none;"></div>
+    <!-- Error message container -->
+    <div id="errorMessages" class="alert alert-danger" style="display: none;"></div>
 
-  <form id="editExamForm" th:action="@{/exams/edit}" th:object="${exam}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <!-- Accordion for input fields -->
-    <div class="accordion" id="examAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="symptomsHeading">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSymptoms" aria-expanded="true" aria-controls="collapseSymptoms">
-            Edit Symptoms
-          </button>
-        </h2>
-        <div id="collapseSymptoms" class="accordion-collapse collapse show" aria-labelledby="symptomsHeading" data-bs-parent="#examAccordion">
-          <div class="accordion-body">
-            <input type="hidden" id="symptoms" name="symptoms" th:field="*{symptoms}">
-            <textarea id="symptomsTextarea" class="form-control" rows="5" placeholder="Enter Symptoms" th:text="${exam.symptoms}"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="diagnosisHeading">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiagnosis" aria-expanded="false" aria-controls="collapseDiagnosis">
-            Edit Diagnosis
-          </button>
-        </h2>
-        <div id="collapseDiagnosis" class="accordion-collapse collapse" aria-labelledby="diagnosisHeading" data-bs-parent="#examAccordion">
-          <div class="accordion-body">
-            <input type="hidden" id="diagnosis" name="diagnosis" th:field="*{diagnosis}">
-            <textarea id="diagnosisTextarea" class="form-control" rows="5" placeholder="Enter Diagnosis" th:text="${exam.diagnosis}"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="managementHeading">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseManagement" aria-expanded="false" aria-controls="collapseManagement">
-            Edit Management
-          </button>
-        </h2>
-        <div id="collapseManagement" class="accordion-collapse collapse" aria-labelledby="managementHeading" data-bs-parent="#examAccordion">
-          <div class="accordion-body">
-            <input type="hidden" id="management" name="management" th:field="*{management}">
-            <textarea id="managementTextarea" class="form-control" rows="5" placeholder="Enter Management" th:text="${exam.management}"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="treatmentHeading">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTreatment" aria-expanded="false" aria-controls="collapseTreatment">
-            Edit Treatment
-          </button>
-        </h2>
-        <div id="collapseTreatment" class="accordion-collapse collapse" aria-labelledby="treatmentHeading" data-bs-parent="#examAccordion">
-          <div class="accordion-body">
-            <input type="hidden" id="treatment" name="treatment" th:field="*{treatment}">
-            <textarea id="treatmentTextarea" class="form-control" rows="5" placeholder="Enter Treatment" th:text="${exam.treatment}"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="reExamDateHeading">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReExamDate" aria-expanded="false" aria-controls="collapseReExamDate">
-            Edit Date of Re-Examination
-          </button>
-        </h2>
-        <div id="collapseReExamDate" class="accordion-collapse collapse" aria-labelledby="reExamDateHeading" data-bs-parent="#examAccordion">
-          <div class="accordion-body">
-            <div class="mb-3">
-              <label for="dateOfReExamination" class="form-label">Date of Re-Examination:</label>
-              <p th:text="'Current date of re-examination: '+${#temporals.format(exam.dateOfReExamination, 'dd MMM, yyyy')}"></p>
-              <input type="date" id="dateOfReExamination" name="dateOfReExamination"
-                     th:field="*{dateOfReExamination}"
-                     class="form-control">
+    <form id="editExamForm" th:action="@{/exams/edit}" th:object="${exam}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <!-- Accordion for input fields -->
+        <div class="accordion" id="examAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="symptomsHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseSymptoms" aria-expanded="true" aria-controls="collapseSymptoms">
+                        Edit Symptoms
+                    </button>
+                </h2>
+                <div id="collapseSymptoms" class="accordion-collapse collapse show" aria-labelledby="symptomsHeading"
+                     data-bs-parent="#examAccordion">
+                    <div class="accordion-body">
+                        <input type="hidden" id="symptoms" name="symptoms" th:field="*{symptoms}">
+                        <textarea id="symptomsTextarea" class="form-control" rows="5" placeholder="Enter Symptoms"
+                                  th:text="${exam.symptoms}"></textarea>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="diagnosisHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseDiagnosis" aria-expanded="false" aria-controls="collapseDiagnosis">
+                        Edit Diagnosis
+                    </button>
+                </h2>
+                <div id="collapseDiagnosis" class="accordion-collapse collapse" aria-labelledby="diagnosisHeading"
+                     data-bs-parent="#examAccordion">
+                    <div class="accordion-body">
+                        <input type="hidden" id="diagnosis" name="diagnosis" th:field="*{diagnosis}">
+                        <textarea id="diagnosisTextarea" class="form-control" rows="5" placeholder="Enter Diagnosis"
+                                  th:text="${exam.diagnosis}"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="managementHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseManagement" aria-expanded="false"
+                            aria-controls="collapseManagement">
+                        Edit Management
+                    </button>
+                </h2>
+                <div id="collapseManagement" class="accordion-collapse collapse" aria-labelledby="managementHeading"
+                     data-bs-parent="#examAccordion">
+                    <div class="accordion-body">
+                        <input type="hidden" id="management" name="management" th:field="*{management}">
+                        <textarea id="managementTextarea" class="form-control" rows="5" placeholder="Enter Management"
+                                  th:text="${exam.management}"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="treatmentHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTreatment" aria-expanded="false" aria-controls="collapseTreatment">
+                        Edit Treatment
+                    </button>
+                </h2>
+                <div id="collapseTreatment" class="accordion-collapse collapse" aria-labelledby="treatmentHeading"
+                     data-bs-parent="#examAccordion">
+                    <div class="accordion-body">
+                        <input type="hidden" id="treatment" name="treatment" th:field="*{treatment}">
+                        <textarea id="treatmentTextarea" class="form-control" rows="5" placeholder="Enter Treatment"
+                                  th:text="${exam.treatment}"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="reExamDateHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseReExamDate" aria-expanded="false"
+                            aria-controls="collapseReExamDate">
+                        Edit Date of Re-Examination
+                    </button>
+                </h2>
+                <div id="collapseReExamDate" class="accordion-collapse collapse" aria-labelledby="reExamDateHeading"
+                     data-bs-parent="#examAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label for="dateOfReExamination" class="form-label">Date of Re-Examination:</label>
+                            <div th:if="${exam.dateOfReExamination != null}">
+                                <p th:text="'Current date of re-examination: '+${#temporals.format(exam.dateOfReExamination, 'dd MMM, yyyy')}"></p>
+                            </div>
+                            <input type="date" id="dateOfReExamination" name="dateOfReExamination"
+                                   th:field="*{dateOfReExamination}"
+                                   class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="priceHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapsePrice" aria-expanded="false" aria-controls="collapsePrice">
+                        Enter Price
+                    </button>
+                </h2>
+                <div id="collapsePrice" class="accordion-collapse collapse" aria-labelledby="priceHeading"
+                     data-bs-parent="#examAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3 d-flex justify-content-between align-items-center">
+                            <!-- Price input -->
+                            <label for="price" class="form-label me-2">Price:</label>
+                            <input type="number" id="price" name="price" th:field="*{price}" min="0" max="10000"
+                                   step="0.01" class="form-control me-2" style="width: 30%;" required>
+
+                            <!-- Payment Type dropdown -->
+                            <label for="paymentType" class="form-label me-2">Payment Type:</label>
+                            <select id="paymentType" th:field="*{paymentType}" class="form-select" style="width: 30%;"
+                                    required>
+                                <option th:each="type : ${T(com.project.clinic.models.PaymentType).values()}"
+                                        th:value="${type}" th:text="${type.displayName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alert for missing price -->
+            <div class="modal fade" id="priceModal" tabindex="-1" aria-labelledby="priceModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header modal-header bg-danger text-white">
+                            <h5 class="modal-title" id="priceModalLabel">Price Required</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Please enter the price.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="priceHeading">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#collapsePrice" aria-expanded="false" aria-controls="collapsePrice">
-            Enter Price
-          </button>
-        </h2>
-        <div id="collapsePrice" class="accordion-collapse collapse" aria-labelledby="priceHeading"
-             data-bs-parent="#examAccordion">
-          <div class="accordion-body">
-            <div class="mb-3 d-flex justify-content-between align-items-center">
-              <!-- Price input -->
-              <label for="price" class="form-label me-2">Price:</label>
-              <input type="number" id="price" name="price" th:field="*{price}" min="0" max="10000"
-                     step="0.01" class="form-control me-2" style="width: 30%;" required>
-
-              <!-- Payment Type dropdown -->
-              <label for="paymentType" class="form-label me-2">Payment Type:</label>
-              <select id="paymentType" th:field="*{paymentType}" class="form-select" style="width: 30%;" required>
-                <option th:each="type : ${T(com.project.clinic.models.PaymentType).values()}"
-                        th:value="${type}" th:text="${type.displayName}"></option>
-              </select>
-            </div>
-          </div>
+        <div class="m-3">
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" onclick="checkForm()">Update Examination</button>
+            <a href="/clients/view?id=" th:href="@{/clients/view(id=${client.id})}" class="btn btn-outline-primary">Back
+                to Patient Details</a>
         </div>
-      </div>
-
-      <!-- Alert for missing price -->
-      <div class="modal fade" id="priceModal" tabindex="-1" aria-labelledby="priceModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header modal-header bg-danger text-white">
-              <h5 class="modal-title" id="priceModalLabel">Price Required</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Please enter the price.
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="m-3">
-      <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary" onclick="checkForm()">Update Examination</button>
-      <a href="/clients/view?id=" th:href="@{/clients/view(id=${client.id})}" class="btn btn-outline-primary">Back to Patient Details</a>
-    </div>
-  </form>
+    </form>
 </div>
 
 <script>
-  // Automatically save textarea value to hidden input when the accordion collapses
-  document.querySelectorAll('.accordion-item').forEach(item => {
-    const textarea = item.querySelector('textarea');
-    const hiddenInput = item.querySelector('input[type="hidden"]');
+    // Automatically save textarea value to hidden input when the accordion collapses
+    document.querySelectorAll('.accordion-item').forEach(item => {
+        const textarea = item.querySelector('textarea');
+        const hiddenInput = item.querySelector('input[type="hidden"]');
 
-    if (textarea && hiddenInput) {
-      // Update the hidden input whenever the textarea value changes
-      textarea.addEventListener('input', () => {
-        hiddenInput.value = textarea.value;
-      });
+        if (textarea && hiddenInput) {
+            // Update the hidden input whenever the textarea value changes
+            textarea.addEventListener('input', () => {
+                hiddenInput.value = textarea.value;
+            });
 
-      // Update the hidden input when the accordion section is collapsed
-      item.addEventListener('hidden.bs.collapse', () => {
-        hiddenInput.value = textarea.value;
-      });
+            // Update the hidden input when the accordion section is collapsed
+            item.addEventListener('hidden.bs.collapse', () => {
+                hiddenInput.value = textarea.value;
+            });
+        }
+    });
+
+    function checkForm() {
+        const priceInput = document.getElementById('price');
+        if (!priceInput.value) {
+            // Show the Bootstrap modal
+            const priceModal = new bootstrap.Modal(document.getElementById('priceModal'));
+            priceModal.show();
+        }
     }
-  });
-
-  function checkForm() {
-    const priceInput = document.getElementById('price');
-    if (!priceInput.value) {
-      // Show the Bootstrap modal
-      const priceModal = new bootstrap.Modal(document.getElementById('priceModal'));
-      priceModal.show();
-    }
-  }
 </script>
 
 
