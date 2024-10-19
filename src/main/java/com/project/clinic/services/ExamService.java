@@ -3,7 +3,6 @@ package com.project.clinic.services;
 import com.project.clinic.exceptions.ClientNotFoundException;
 import com.project.clinic.exceptions.ExamNotFoundException;
 import com.project.clinic.models.Client;
-import com.project.clinic.models.ClientStatus;
 import com.project.clinic.models.Exam;
 import com.project.clinic.models.PaymentType;
 import com.project.clinic.repositories.ClientRepository;
@@ -47,7 +46,7 @@ public class ExamService {
             exam.setPrice(new BigDecimal(0));
         }
         if (exam.getPaymentType() == null){
-           exam.setPaymentType(PaymentType.Cash);
+           exam.setPaymentType(PaymentType.CASH);
         }
         examRepository.save(exam);
         setClientStatus(clientId);

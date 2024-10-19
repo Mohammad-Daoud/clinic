@@ -1,7 +1,7 @@
 package com.project.clinic.models;
 
 public enum PaymentType {
-    Cash("Cash"),
+    CASH("Cash"),
     INSURANCE("Insurance");
 
     private final String displayName;

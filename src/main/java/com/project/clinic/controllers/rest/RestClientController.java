@@ -1,13 +1,17 @@
 package com.project.clinic.controllers.rest;
 
 import com.project.clinic.models.Exam;
+import com.project.clinic.providers.ApplicationContextProviders;
 import com.project.clinic.services.ClientService;
 import com.project.clinic.services.ExamService;
+import com.project.clinic.utils.NetworkUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.thymeleaf.spring6.context.SpringContextUtils;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -40,6 +44,8 @@ public class RestClientController {
     public String getPrescriptionHtml(@RequestParam("id") Long id) {
         Exam exam = examService.getExamById(id);
         Context context = new Context();
+        ApplicationContext applicationContext = ApplicationContextProviders.getContext();
+        context.setVariable("baseUrl", NetworkUtil.getUrl(applicationContext));
         context.setVariable("exam", exam);
         return templateEngine.process("prescription", context);
     }

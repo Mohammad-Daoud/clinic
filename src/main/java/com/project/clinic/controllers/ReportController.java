@@ -6,16 +6,13 @@ import com.project.clinic.models.Exam;
 import com.project.clinic.models.PaymentType;
 import com.project.clinic.services.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -35,21 +32,27 @@ public class ReportController {
 
         // Calculate totals
         long totalVisits = examinations.size();
+        long totalInsuranceVisits = examinations.stream().filter(e -> e.getPaymentType() == PaymentType.INSURANCE).count();
+        long totalCashVisits = examinations.stream().filter(e -> e.getPaymentType() == PaymentType.CASH).count();
         double totalCashAmount = examinations.stream()
-                .filter(e -> e.getPaymentType().equals(PaymentType.Cash))
+                .filter(e -> e.getPaymentType().equals(PaymentType.CASH))
                 .mapToDouble(exam -> exam.getPrice().doubleValue())
                 .sum();
         double totalInsuranceAmount = examinations.stream()
                 .filter(e -> e.getPaymentType().equals(PaymentType.INSURANCE))
-                .mapToDouble(exam -> exam.getPrice().doubleValue()) // Convert BigDecimal to double
+                .mapToDouble(exam -> exam.getPrice().doubleValue())
                 .sum();
 
 
         // Add data to the model
         model.addAttribute("examinations", examinations);
+        model.addAttribute("totalInsuranceVisits",totalInsuranceVisits);
+        model.addAttribute("totalCashVisits",totalCashVisits);
         model.addAttribute("totalVisits", totalVisits);
+
         model.addAttribute("totalCashAmount", totalCashAmount);
         model.addAttribute("totalInsuranceAmount", totalInsuranceAmount);
+        model.addAttribute("totalAmount", totalCashAmount+totalInsuranceAmount);
 
         return "report"; // Return the report.html view
     }

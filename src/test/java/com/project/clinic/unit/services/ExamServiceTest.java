@@ -85,7 +85,7 @@ class ExamServiceTest {
         // Then
         verify(examRepository).save(mockExam);
         assertEquals(LocalDate.now(), mockExam.getDateLastExam());
-        assertEquals(PaymentType.Cash, mockExam.getPaymentType());
+        assertEquals(PaymentType.CASH, mockExam.getPaymentType());
         assertEquals(mockClient, mockExam.getClient());
     }
 

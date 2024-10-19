@@ -2,7 +2,6 @@ package com.project.clinic.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -44,7 +43,7 @@ public class Exam {
         }
         this.price = updatedExam.getPrice();
         if (updatedExam.getPaymentType() == null){
-            this.paymentType = PaymentType.Cash;
+            this.paymentType = PaymentType.CASH;
         }else {
             this.paymentType = updatedExam.getPaymentType();
         }
