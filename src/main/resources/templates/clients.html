@@ -145,7 +145,7 @@
                 <td th:text="${client.phoneNumber}"></td>
                 <td>
                     <!-- Status circle with dynamic class and tooltip -->
-                    <span class="status-circle"
+                    <span class="status-circle m-2"
                           th:classappend="'status-' + ${client.status.displayName.toLowerCase()}"
                           th:attr="data-tooltip=${#strings.capitalize(client.status.displayName)}"> <!-- Tooltip formatted -->
                     </span>
