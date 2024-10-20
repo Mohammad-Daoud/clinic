@@ -6,75 +6,107 @@
     <title th:text="${exam.client.firstName} + ' ' + ${exam.client.lastName} + ' Prescription'">Prescription</title>
 
     <style>
-        /* Styles for background and layout */
+        /* General styles for layout */
+        p::first-letter {
+            text-transform: capitalize;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Full width for header and footer */
+        .header-img,
+        .footer-img,
+        .hline-img {
+            width: 100%;
+        }
+
         .prescriptionContent {
             margin: 10px 10px 0 2px;
             background-repeat: no-repeat;
-            min-height: 652px;
+            background-size: cover !important; /* Make the background cover the entire element */
+            background-position: center !important; /* Center the background image */
+            min-height: 420px;
             max-height: 100%;
             font-family: "Times New Roman", Times, serif;
             font-weight: bold;
+            box-sizing: border-box;
         }
 
         .prescriptionBody {
-            width: 600px;
-            margin: 0 auto;
+            width: 100% !important;
             background-repeat: no-repeat;
         }
 
         .prescriptionInfo {
             font-family: "Times New Roman", Times, serif;
             font-weight: bold;
-            display: flex; /* Use flexbox for layout */
-            justify-content: space-between; /* Space between items */
-            margin-left: 50px;
-            margin-bottom: 10px; /* Optional: Add space below the info */
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Ensure vertical alignment */
+            margin-bottom: 10px;
+            padding: 0 10px; /* Add some padding for spacing */
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .prescriptionFooter {
-            height: 56px;
+
         }
 
-        /* Optional: Additional styling for spans to enhance appearance */
         .prescriptionInfo span {
-            flex: 1; /* Equal space for each item */
-            text-align: center; /* Center-align text */
+            flex: 1; /* Ensure equal spacing */
+            text-align: center;
         }
 
-        /* Add responsiveness */
-        @media (max-width: 600px) {
+        /* Ensure images take full width */
+        .hline-img {
+            width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            margin-top: 10px;
+        }
+
+        /* Responsive handling */
+        @media screen {
             .prescriptionInfo {
-                margin-top: 10px;
-                font-family: "Times New Roman", Times, serif;
-                font-weight: bold;
                 flex-direction: column; /* Stack items vertically on small screens */
-                align-items: center; /* Center-align the items */
+                align-items: center;
             }
         }
+
     </style>
 </head>
 <body class="prescriptionBody">
-<div style="margin-bottom: 20px !important;">
-    <img alt="header"
-         th:src="${baseUrl}+'/static/img/reportHeader.png'"/>
+<div style="margin-bottom: 20px;">
+    <img class="header-img" alt="header" th:src="${baseUrl}+'/static/img/reportHeader.png'"/>
 </div>
-<div class="prescriptionInfo" style="margin-top: 10px">
+
+<div class="prescriptionInfo">
     <span>Name: <span th:text="${exam.client.firstName} + ' ' + ${exam.client.lastName}"></span></span>
     <span>Age: <span th:text="${exam.client.age}"></span></span>
     <span>Date: <span th:text="${exam.dateLastExam}"></span></span>
 </div>
+
 <div>
-    <img alt="header"
-         th:src="${baseUrl}+'/static/img/hline.png'"/>
+    <img class="hline-img" alt="horizontal line" th:src="${baseUrl}+'/static/img/hline.png'" />
 </div>
+
 <div class="prescriptionContent" th:style="'background:url(' + ${baseUrl}+'/static/img/reportContentBG.png);'">
-    <p>&nbsp;</p>
+    <p style="font-size: 40px; font-family:'DejaVu Sans'"><i>Rx.&nbsp;</i></p>
     <p id="treatment-content" style="margin-left: 50px;white-space: pre; font-size: 36px" th:text="${exam.treatment}"></p>
 </div>
 
-<div class="prescriptionFooter mt-2">
-    <img alt="footer"
-         th:src="${baseUrl}+'/static/img/reportFooter.png'">
+<div class="prescriptionFooter">
+    <img class="footer-img" alt="footer" th:src="${baseUrl}+'/static/img/reportFooter.png'">
 </div>
 </body>
 </html>

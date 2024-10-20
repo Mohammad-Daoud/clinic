@@ -8,6 +8,7 @@ import com.project.clinic.models.PaymentType;
 import com.project.clinic.repositories.ClientRepository;
 import com.project.clinic.repositories.ExamRepository;
 import com.project.clinic.utils.ClientsUtils;
+import com.project.clinic.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,11 @@ public class ExamService {
         if (exam.getPaymentType() == null){
            exam.setPaymentType(PaymentType.CASH);
         }
+        String treatment = exam.getTreatment();
+        if (treatment !=null){
+            treatment = StringUtils.capitalizeFirstWordInLine(treatment);
+        }
+        exam.setTreatment(treatment);
         examRepository.save(exam);
         setClientStatus(clientId);
     }

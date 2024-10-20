@@ -1,5 +1,6 @@
 package com.project.clinic.models;
 
+import com.project.clinic.utils.StringUtils;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -36,7 +37,11 @@ public class Exam {
         this.symptoms = updatedExam.getSymptoms();
         this.diagnosis = updatedExam.getDiagnosis();
         this.management = updatedExam.getManagement();
-        this.treatment = updatedExam.getTreatment();
+        String treatment = updatedExam.getTreatment();
+        if (treatment != null) {
+            treatment = StringUtils.capitalizeFirstWordInLine(treatment);
+        }
+        this.treatment = treatment;
         this.dateOfReExamination = updatedExam.getDateOfReExamination();
         if(updatedExam.getPrice() == null){
             updatedExam.setPrice(new BigDecimal(0));
