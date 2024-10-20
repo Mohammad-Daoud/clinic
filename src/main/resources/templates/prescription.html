@@ -12,6 +12,8 @@
             background-repeat: no-repeat;
             min-height: 652px;
             max-height: 100%;
+            font-family: "Times New Roman", Times, serif;
+            font-weight: bold;
         }
 
         .prescriptionBody {
@@ -21,6 +23,8 @@
         }
 
         .prescriptionInfo {
+            font-family: "Times New Roman", Times, serif;
+            font-weight: bold;
             display: flex; /* Use flexbox for layout */
             justify-content: space-between; /* Space between items */
             margin-left: 50px;
@@ -40,6 +44,9 @@
         /* Add responsiveness */
         @media (max-width: 600px) {
             .prescriptionInfo {
+                margin-top: 10px;
+                font-family: "Times New Roman", Times, serif;
+                font-weight: bold;
                 flex-direction: column; /* Stack items vertically on small screens */
                 align-items: center; /* Center-align the items */
             }
@@ -47,11 +54,11 @@
     </style>
 </head>
 <body class="prescriptionBody">
-<div>
+<div style="margin-bottom: 20px !important;">
     <img alt="header"
          th:src="${baseUrl}+'/static/img/reportHeader.png'"/>
 </div>
-<div class="prescriptionInfo">
+<div class="prescriptionInfo" style="margin-top: 10px">
     <span>Name: <span th:text="${exam.client.firstName} + ' ' + ${exam.client.lastName}"></span></span>
     <span>Age: <span th:text="${exam.client.age}"></span></span>
     <span>Date: <span th:text="${exam.dateLastExam}"></span></span>
@@ -62,7 +69,7 @@
 </div>
 <div class="prescriptionContent" th:style="'background:url(' + ${baseUrl}+'/static/img/reportContentBG.png);'">
     <p>&nbsp;</p>
-    <p id="treatment-content" style="margin-left: 50px;white-space: pre;" th:text="${exam.treatment}"></p>
+    <p id="treatment-content" style="margin-left: 50px;white-space: pre; font-size: 36px" th:text="${exam.treatment}"></p>
 </div>
 
 <div class="prescriptionFooter mt-2">

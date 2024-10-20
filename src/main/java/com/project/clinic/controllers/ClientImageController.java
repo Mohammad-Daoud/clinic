@@ -15,7 +15,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/clients/images")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class ClientImageController {
 
     private final ClientImageService clientImageService;
